@@ -23,13 +23,14 @@ import com.github.ajalt.clikt.core.BadParameterValue
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.core.ProgramResult
 import com.github.ajalt.clikt.core.UsageError
-import com.github.ajalt.clikt.parameters.options.associate
 import com.github.ajalt.clikt.parameters.options.convert
 import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.flag
+import com.github.ajalt.clikt.parameters.options.multiple
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.required
 import com.github.ajalt.clikt.parameters.options.split
+import com.github.ajalt.clikt.parameters.options.splitPair
 import com.github.ajalt.clikt.parameters.types.enum
 import com.github.ajalt.clikt.parameters.types.file
 
@@ -114,7 +115,7 @@ class AnalyzerCommand : CliktCommand(name = "analyze", help = "Determine depende
     private val labels by option(
         "--label", "-l",
         help = "Add a label to the ORT result. Can be used multiple times. For example: --label distribution=external"
-    ).associate()
+    ).splitPair().multiple()
 
     override fun run() {
         val outputFiles = outputFormats.distinct().map { format ->

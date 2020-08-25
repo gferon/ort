@@ -88,5 +88,11 @@ fun OrtResult.getDetectedLicensesWithCopyrights(
 /**
  * Copy this [OrtResult] and add all [labels] to the existing labels, overwriting existing labels on conflict.
  */
-fun OrtResult.mergeLabels(labels: Map<String, String>) =
-    copy(labels = this.labels + labels).apply { data += this@mergeLabels.data }
+fun OrtResult.mergeLabels(labels: List<Pair<String, String>>): OrtResult {
+    val labelsMap = labels.groupBy { it.first }
+        .mapValues { (_, value) -> value.mapTo(mutableSetOf()) { it.second } }
+    val mergedLabels = (this.labels.asSequence() + labelsMap.asSequence())
+        .groupBy { it.key }
+        .mapValues { (_, value) -> value.flatMapTo(mutableSetOf()) { it.value } }
+    return copy(labels = mergedLabels).apply { data += this@mergeLabels.data }
+}

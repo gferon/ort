@@ -29,9 +29,11 @@ import com.github.ajalt.clikt.parameters.options.associate
 import com.github.ajalt.clikt.parameters.options.convert
 import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.flag
+import com.github.ajalt.clikt.parameters.options.multiple
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.required
 import com.github.ajalt.clikt.parameters.options.split
+import com.github.ajalt.clikt.parameters.options.splitPair
 import com.github.ajalt.clikt.parameters.types.enum
 import com.github.ajalt.clikt.parameters.types.file
 
@@ -141,7 +143,7 @@ class EvaluatorCommand : CliktCommand(name = "evaluate", help = "Evaluate rules 
         "--label", "-l",
         help = "Add a label to the ORT result. Can be used multiple times. Any existing label with the same key in " +
                 "the input ORT result will be overwritten. For example: --label distribution=external"
-    ).associate()
+    ).splitPair().multiple()
 
     override fun run() {
         val outputFiles = mutableListOf<File>()
